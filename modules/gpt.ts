@@ -18,11 +18,16 @@ const sendMessageToChatGPT = async (api: BingChat, message: string, client: Clie
         gpt.TYPING,
         MessageType.text
     );
-    if (Object.hasOwn(contexts, BotsApp.sender)) {
+    let chatId = ''; // BotsApp.sender
+    if (BotsApp.isGroup) {
+    } else {
+        let chatId = BotsApp.chatId;
+    }
+    if (Object.hasOwn(contexts, chatId)) {
         try {
             const res = await api.sendMessage(message, {
-                conversationId: contexts[BotsApp.sender].conversationId,
-                parentMessageId: contexts[BotsApp.sender].id
+                conversationId: contexts[chatId].conversationId,
+                parentMessageId: contexts[chatId].id
             })
             await client.deleteMessage(BotsApp.chatId, mes.key)
             await client.sendMessage(
@@ -47,7 +52,7 @@ const sendMessageToChatGPT = async (api: BingChat, message: string, client: Clie
                 MessageType.text,
                 {quoted: chat},
             );
-            contexts[BotsApp.sender] = res
+            contexts[chatId] = res
         } catch (err) {
             await inputSanitization.handleError(err, client, BotsApp);
         }
@@ -60,6 +65,7 @@ export default {
     extendedDescription: gpt.EXTENDED_DESCRIPTION,
     demo: {isEnabled: true, text: ".gpt"},
     async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+        console.log({BotsApp})
         try {
             if (config.OPENAI_ACCESS_TOKEN.trim().length == 0) {
                 client.sendMessage(
@@ -69,7 +75,9 @@ export default {
                 );
             } else {
                 const api = new ChatGPT.ChatGPTUnofficialProxyAPI({
-                    accessToken: config.OPENAI_ACCESS_TOKEN
+                    accessToken: config.OPENAI_ACCESS_TOKEN,
+                    apiReverseProxyUrl: 'https://api.pawan.krd/backend-api/conversation'
+
                 })
                 const message = BotsApp.body.slice(4)
                 if (message.trim().length == 0) {
@@ -84,7 +92,7 @@ export default {
                     }
                 } else {
                     if (message.trim() == 'reset') {
-                        delete contexts[BotsApp.sender];
+                        delete contexts[BotsApp.chatId];
                         client.sendMessage(
                             BotsApp.chatId,
                             gpt.CONVERSATION_RESET,
