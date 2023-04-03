@@ -9,9 +9,10 @@ import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
 import BotsApp from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
+
 const SONG = STRINGS.song;
 
-export default  {
+export default {
     name: "song",
     description: SONG.DESCRIPTION,
     extendedDescription: SONG.EXTENDED_DESCRIPTION,
@@ -50,15 +51,21 @@ export default  {
                     }
                     const video = await yts({ videoId: songId });
                 } catch (err) {
-                    throw err;
+                    console.error(err);
+                    await client.sendMessage(
+                        BotsApp.chatId,
+                        "Invalid song. Please try again.",
+                        MessageType.text
+                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    return;
                 }
             } else {
                 var song = await yts(args.join(" "));
                 song = song.all;
                 if (song.length < 1) {
-                    client.sendMessage(
+                    await client.sendMessage(
                         BotsApp.chatId,
-                        SONG.SONG_NOT_FOUND,
+                        "Song not found. Please try again.",
                         MessageType.text
                     ).catch(err => inputSanitization.handleError(err, client, BotsApp));
                     return;
@@ -82,31 +89,43 @@ export default  {
                         );
                         await client.sendMessage(
                             BotsApp.chatId,
-                            fs.readFileSync(`tmp/${chat.key.id}.mp3`),
+                            {
+                                url: `tmp/${chat.key.id}.mp3`,
+                                mimetype: "audio/mpeg",
+                            },
                             MessageType.audio
                         ).catch(err => inputSanitization.handleError(err, client, BotsApp));
-                        inputSanitization.deleteFiles(`tmp/${chat.key.id}.mp3`);
-                        client.deleteMessage(BotsApp.chatId, {
-                            id: reply.key.id,
-                            remoteJid: BotsApp.chatId,
-                            fromMe: true,
-                        });
-                        client.deleteMessage(BotsApp.chatId, {
-                            id: upload.key.id,
-                            remoteJid: BotsApp.chatId,
-                            fromMe: true,
-                        });
+                        fs.unlinkSync(`tmp/${chat.key.id}.mp3`);
+                    })
+                    .on("error", async (err) => {
+                        console.error(err);
+                        await client.sendMessage(
+                            BotsApp.chatId,
+                            "Error downloading song. Please try again.",
+                            MessageType.text
+                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
                     });
             } catch (err) {
-                throw err;
+                console.error(err);
+                await client.sendMessage(
+                    BotsApp.chatId,
+                    "Error downloading song. Please try again.",
+                    MessageType.text
+                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
             }
         } catch (err) {
-            await inputSanitization.handleError(
-                err,
-                client,
-                BotsApp,
-                SONG.SONG_NOT_FOUND
-            );
+            console.error(err);
+            await client.sendMessage(
+                BotsApp.chatId,
+                "Error while processing your request. Please try again.",
+                MessageType.text
+            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+        } finally {
+            fs.unlink(`tmp/${chat.key.id}.mp3`, (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
         }
     },
 };
