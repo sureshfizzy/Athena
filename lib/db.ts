@@ -56,7 +56,7 @@ const data = {
         EXTENDED_DESCRIPTION:
             "```This module can be used to check if the bot is currently online or not.\n\nExample usage,```\n*.alive*",
         ALIVE_MSG:
-            "```💠 BotsApp has been integrated successfully. 💠\n\nUse the ```  *.help*  ``` command to get a list of plugins that will make your WhatsApp experience much easier.\n\nIf you are impressed with my service, consider supporting the Bot on GitHub-\n```https://github.com/Prince-Mendiratta/BotsApp\n\n```Check out our official website for any new updates.```",
+            "```💠 BotsApp has been integrated successfully. 💠\n\nUse the ```  *.help*  ``` command to get a list of plugins that will make your WhatsApp experience much easier.\n\nIf you are impressed with my service, consider supporting the Bot on GitHub-\n```https://github.com/sureshfizzy\n\n```Check out our official website for any new updates.```",
     },
     bing: {
         DESCRIPTION: "Module to get response from the new bing.",
@@ -460,6 +460,17 @@ const data = {
         NO_VIDEOS: "```No videos could be found.```",
         ENTER_INPUT:
             "```Please enter the query you want to search for. Use the``` *.help yt* ```command for more info.```",
+    },
+    video: {
+        DESCRIPTION: "Download Videos From Youtube",
+        EXTENDED_DESCRIPTION:
+            "```Get Videos from YouTube with their authorname, timestamp and link. Mention the keywords that are required to be search```",
+        ENTER_VIDEO: "```Enter video with the command```",
+        VIDEO_NOT_FOUND:
+            "```Could not find the video you entered. Check whether the link or keyword entered is correct.```",
+        DOWNLOADING: "```Downloading your video...```",
+        UPLOADING: "```Uploading video...```",
+        INTRO: "",
     },
 };
 

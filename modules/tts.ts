@@ -12,10 +12,11 @@ export default {
     name: "tts",
     description: tts.DESCRIPTION,
     extendedDescription: tts.EXTENDED_DESCRIPTION,
-    demo: { isEnabled: true, text: ['.tts Hello, how are you?', '.tts Hello, how are you? | ja'] },
+    demo: { isEnabled: true, text: ['.tts Hello, how are you?', '.tts Hello, how are you? | en-US-female'] },
     async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
         let text: string = '';
-        let langCode: string = "en";
+        let langCode: string = "en-US";
+        let voiceCode: string = "en-US-Wavenet-F";
         if(BotsApp.isTextReply && BotsApp.replyMessage){
             text = BotsApp.replyMessage
         }else if(BotsApp.isTextReply){
@@ -24,7 +25,11 @@ export default {
         }else{
             for (var i = 0; i < args.length; i++) {
                 if (args[i] == '|') {
-                    langCode = args[i + 1];
+                    const codes = args[i + 1].split('-');
+                    langCode = codes[0];
+                    if (codes.length > 1) {
+                        voiceCode = args[i + 1];
+                    }
                     break;
                 }
                 text += args[i] + " ";
@@ -40,7 +45,7 @@ export default {
         } else {
             try {
                 const url: string = googleTTS.getAudioUrl(text, {
-                    lang: langCode,
+                    lang: 'en',
                     slow: false,
                     host: 'https://translate.google.com',
                 });
