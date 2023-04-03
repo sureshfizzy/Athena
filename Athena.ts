@@ -17,7 +17,7 @@ import format from 'string-format';
 import resolve from './core/helper.js'
 import { Sequelize } from 'sequelize/types'
 import Command from './sidekick/command.js'
-import BotsApp from './sidekick/sidekick.js'
+import Athena from './sidekick/sidekick.js'
 import Client from './sidekick/client.js'
 import { MessageType } from './sidekick/message-type.js'
 
@@ -90,7 +90,7 @@ setInterval(() => {
             logger,
             printQRInTerminal: true,
             auth: state,
-            browser: ["BotsApp", "Chrome", "4.0.0"],
+            browser: ["Athena", "Chrome", "4.0.0"],
             msgRetryCounterMap,
             // implement to handle retries
             getMessage: async key => {
@@ -118,13 +118,13 @@ setInterval(() => {
                         if ((lastDisconnect.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut) {
                             startSock()
                         } else {
-                            console.log(chalk.redBright('Connection closed. You are logged out. Delete the BotsApp.db and session.data.json files to rescan the code.'));
+                            console.log(chalk.redBright('Connection closed. You are logged out. Delete the Athena.db and session.data.json files to rescan the code.'));
                             process.exit(0);
                         }
                     } else if (connection === 'connecting') {
                         console.log(chalk.yellowBright("[INFO] Connecting to WhatsApp..."));
                     } else if (connection === 'open') {
-                        console.log(chalk.greenBright.bold("[INFO] Connected! Welcome to BotsApp"));
+                        console.log(chalk.greenBright.bold("[INFO] Connected! Welcome to Athena"));
                     }
                 }
 
@@ -171,11 +171,11 @@ setInterval(() => {
                     }
                     for(const msg of upsert.messages){
                         let chat: proto.IWebMessageInfo = msg;
-                        let BotsApp: BotsApp = await resolve(chat, sock);
-                        // console.log(BotsApp);
-                        if (BotsApp.isCmd) {
-                            let isBlacklist: boolean = await Blacklist.getBlacklistUser(BotsApp.sender, BotsApp.chatId);
-                            const cleared: boolean = await clearance(BotsApp, client, isBlacklist);
+                        let Athena: Athena = await resolve(chat, sock);
+                        // console.log(Athena);
+                        if (Athena.isCmd) {
+                            let isBlacklist: boolean = await Blacklist.getBlacklistUser(Athena.sender, Athena.chatId);
+                            const cleared: boolean = await clearance(Athena, client, isBlacklist);
                             if (!cleared) {
                                 return;
                             }
@@ -186,15 +186,15 @@ setInterval(() => {
                                 }
                             }
                             await sock.sendMessage(chat.key.remoteJid, reactionMessage);
-                            console.log(chalk.redBright.bold(`[INFO] ${BotsApp.commandName} command executed.`));
-                            const command = commandHandler.get(BotsApp.commandName);
-                            var args = BotsApp.body.trim().split(/\s+/).slice(1);
+                            console.log(chalk.redBright.bold(`[INFO] ${Athena.commandName} command executed.`));
+                            const command = commandHandler.get(Athena.commandName);
+                            var args = Athena.body.trim().split(/\s+/).slice(1);
                             if (!command) {
-                                client.sendMessage(BotsApp.chatId, "```Woops, invalid command! Use```  *.help*  ```to display the command list.```", MessageType.text);
+                                client.sendMessage(Athena.chatId, "```Woops, invalid command! Use```  *.help*  ```to display the command list.```", MessageType.text);
                                 return;
-                            } else if (command && BotsApp.commandName == "help") {
+                            } else if (command && Athena.commandName == "help") {
                                 try {
-                                    command.handle(client, chat, BotsApp, args, commandHandler);
+                                    command.handle(client, chat, Athena, args, commandHandler);
                                     return;
                                 } catch (err) {
                                     console.log(chalk.red("[ERROR] ", err));
@@ -202,7 +202,7 @@ setInterval(() => {
                                 }
                             }
                             try {
-                                await command.handle(client, chat, BotsApp, args).catch(err => console.log("[ERROR] " + err));
+                                await command.handle(client, chat, Athena, args).catch(err => console.log("[ERROR] " + err));
                             } catch (err) {
                                 console.log(chalk.red("[ERROR] ", err));
                             }

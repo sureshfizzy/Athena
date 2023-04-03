@@ -4,7 +4,7 @@ import STRINGS from "../lib/db.js";
 import format from "string-format";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 
 export default  {
@@ -19,9 +19,9 @@ export default  {
             ".tr how are you | hi",
         ],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         const processing = await client.sendMessage(
-            BotsApp.chatId,
+            Athena.chatId,
             STRINGS.tr.PROCESSING,
             MessageType.text
         );
@@ -30,21 +30,21 @@ export default  {
             var language = "";
             if (args.length == 0) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STRINGS.tr.EXTENDED_DESCRIPTION,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
-                return await client.deleteMessage(BotsApp.chatId, {
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }
-            if (!BotsApp.isTextReply) {
+            if (!Athena.isTextReply) {
                 try {
-                    var body = BotsApp.body.split("|");
+                    var body = Athena.body.split("|");
                     text = body[0].replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     );
                     var i = 0;
@@ -54,37 +54,37 @@ export default  {
                     language = body[1].split(" ")[i];
                 } catch (err) {
                     if (err instanceof TypeError) {
-                        text = BotsApp.body.replace(
-                            BotsApp.body[0] + BotsApp.commandName + " ",
+                        text = Athena.body.replace(
+                            Athena.body[0] + Athena.commandName + " ",
                             ""
                         );
                         language = "English";
                     }
                 }
-            } else if (BotsApp.replyMessage) {
-                text = BotsApp.replyMessage;
+            } else if (Athena.replyMessage) {
+                text = Athena.replyMessage;
                 language = args[0];
             } else {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STRINGS.tr.INVALID_REPLY,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
-                return await client.deleteMessage(BotsApp.chatId, {
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }
             if (text.length > 4000) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     format(STRINGS.tr.TOO_LONG, String(text.length)),
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
-                return await client.deleteMessage(BotsApp.chatId, {
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }
@@ -93,7 +93,7 @@ export default  {
             })
                 .then((res) => {
                     client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         format(
                             STRINGS.tr.SUCCESS,
                             res.from.language.iso,
@@ -107,17 +107,17 @@ export default  {
                     inputSanitization.handleError(
                         err,
                         client,
-                        BotsApp,
+                        Athena,
                         STRINGS.tr.LANGUAGE_NOT_SUPPORTED
                     );
                 });
-            return await client.deleteMessage(BotsApp.chatId, {
+            return await client.deleteMessage(Athena.chatId, {
                 id: processing.key.id,
-                remoteJid: BotsApp.chatId,
+                remoteJid: Athena.chatId,
                 fromMe: true,
             });
         } catch (err) {
-            inputSanitization.handleError(err, client, BotsApp);
+            inputSanitization.handleError(err, client, Athena);
         }
     },
 };

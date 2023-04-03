@@ -8,11 +8,11 @@ const data = {
             "```Sorry, don't have permission to do so since I am not an admin.```",
         ADMIN_PERMISSION: "```You need to be an admin to execute this command.```",
         SUDO_PERMISSION:
-            "```Hey there, I am 💠BotsApp💠. I guess you were trying to use my commands in``` *{BotsApp.groupName}*```. However, the bot is currently in {worktype} mode. This enables only the owner and sudo users to use the command``` *{commandName}* ```.\n\nIf you are keen to use my features, you can deploy BotsApp on your own account without much effort, in less than 5 minutes! Check out the links given below.```\n\n🔗https://mybotsapp.com\n🔗https://github.com/Prince-Mendiratta/BotsApp",
+            "```Hey there, I am 💠Athena💠. I guess you were trying to use my commands in``` *{Athena.groupName}*```. However, the bot is currently in {worktype} mode. This enables only the owner and sudo users to use the command``` *{commandName}* ```.\n\nIf you are keen to use my features, you can deploy Athena on your own account without much effort, in less than 5 minutes! Check out the links given below.```\n\n🔗https://myAthena.com\n🔗https://github.com/Prince-Mendiratta/Athena",
         ERROR_TEMPLATE:
             "```Looks like something went wrong. Need not worry. Here are some logs since when the bot was not responding as expected.```\n```---------```\n```🧐 Command:``` *{commandName}*\n```😎 From Me?:``` *{fromMe}*\n```🗣️ Was a reply?:``` *{isReply}*\n```👥 In a group?``` *{isGroup}*\n```📥 In Inbox?``` *{isPm}*\n```📸 Command with image?``` *{isImage}*\n```🕺🏻 Is Bot group admin?``` *{isBotGroupAdmin}*\n```📈 Was Sender group admin?``` *{isSenderGroupAdmin}*\n```🫂 Was sender sudo?``` *{isSenderSudo}*\n```⚠️ Error:``` \n*{err}*\n```---------```\n_To figure out what exactly went wrong, please report/raise the issue on our support chat at_ https://chat.whatsapp.com/GRPWL8TBVq91lQig9JoqME",
         SUCCESSFUL_CONNECTION:
-            "*BotsApp successfuly integrated.*\n```Bot is currently working in``` *{worktype}* ```mode.```\n```For more information regarding Bot working and permissions check out:``` \n🔗https://github.com/Prince-Mendiratta/BotsApp.\n\n⚠️ The bot will not work in this chat.",
+            "*Athena successfuly integrated.*\n```Bot is currently working in``` *{worktype}* ```mode.```\n```For more information regarding Bot working and permissions check out:``` \n🔗https://github.com/Prince-Mendiratta/Athena.\n\n⚠️ The bot will not work in this chat.",
     },
     abl: {
         DESCRIPTION: "Module to blacklist a person or a chat from using the bot.",
@@ -56,7 +56,7 @@ const data = {
         EXTENDED_DESCRIPTION:
             "```This module can be used to check if the bot is currently online or not.\n\nExample usage,```\n*.alive*",
         ALIVE_MSG:
-            "```💠 BotsApp has been integrated successfully. 💠\n\nUse the ```  *.help*  ``` command to get a list of plugins that will make your WhatsApp experience much easier.\n\nIf you are impressed with my service, consider supporting the Bot on GitHub-\n```https://github.com/sureshfizzy\n\n```Check out our official website for any new updates.```",
+            "```💠 Athena has been integrated successfully. 💠\n\nUse the ```  *.help*  ``` command to get a list of plugins that will make your WhatsApp experience much easier.\n\nIf you are impressed with my service, consider supporting the Bot on GitHub-\n```https://github.com/sureshfizzy\n\n```Check out our official website for any new updates.```",
     },
     bing: {
         DESCRIPTION: "Module to get response from the new bing.",
@@ -106,7 +106,7 @@ const data = {
         CARBONIZING:
             "```Converting your text into a code snippet. Please wait...```",
         OUTPUT:
-            "*<< Here's your carbon image! >>*\n```Carbonized by BotsApp\nColour Scheme: {}```",
+            "*<< Here's your carbon image! >>*\n```Carbonized by Athena\nColour Scheme: {}```",
         INVALID_REPLY: "```The replied message should be text.```",
         INVALID_THEME:
             "```Please enter a valid theme.\nDo note that theme names are```  *case sensitive*.",
@@ -160,8 +160,8 @@ const data = {
     getdp: {
         DESCRIPTION: "Get display picture",
         EXTENDED_DESCRIPTION:
-            "```Get the profile picture of the group in a group conversation or the profile picture of BotsApp itself in personal chat. Tag a person in a group to get their profile picture.```",
-        IMAGE_CAPTION: "```Here is the display image. Procured by BotsApp.```",
+            "```Get the profile picture of the group in a group conversation or the profile picture of Athena itself in personal chat. Tag a person in a group to get their profile picture.```",
+        IMAGE_CAPTION: "```Here is the display image. Procured by Athena.```",
         PROCESSING: "```Getting display picture...```",
         TRY_AGAIN:
             "```Display picture not found. Upload an image and try again.```",
@@ -179,9 +179,9 @@ const data = {
         DESCRIPTION: "Get the command list and info on modules",
         EXTENDED_DESCRIPTION:
             "This module is used to get info on other modules and their triggers.",
-        HEAD: "🌀 *BotsApp Menu* 🌀\n```Use .help command for detailed info on a module.```",
+        HEAD: "🌀 *Athena Menu* 🌀\n```Use .help command for detailed info on a module.```",
         TEMPLATE: "\n\n🤖 *Command* - ```{}```\n💡 *Info* - ```{}```",
-        COMMAND_INTERFACE: "🌀 *BotsApp Command Interface* 🌀\n\n",
+        COMMAND_INTERFACE: "🌀 *Athena Command Interface* 🌀\n\n",
         COMMAND_INTERFACE_TEMPLATE: "💠 *Triggers -* ```{}```\n📚 *Info -* {}",
         FOOTER:
             "```\n\nClick on the button below to get a preview of the plugin.```",

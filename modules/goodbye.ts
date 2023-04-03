@@ -3,7 +3,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import Greetings from "../database/greeting.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const GOODBYE = Strings.goodbye;
 
@@ -15,39 +15,39 @@ export default  {
         isEnabled: true,
         text: [".goodbye", ".goodbye off", ".goodbye delete"],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (!BotsApp.isGroup) {
+            if (!Athena.isGroup) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     GOODBYE.NOT_A_GROUP,
                     MessageType.text
                 );
                 return;
             }
             if (args.length == 0) {
-                await client.getGroupMetaData(BotsApp.chatId, BotsApp);
-                var Msg: any = await Greetings.getMessage(BotsApp.chatId, "goodbye");
+                await client.getGroupMetaData(Athena.chatId, Athena);
+                var Msg: any = await Greetings.getMessage(Athena.chatId, "goodbye");
                 try {
                     var enabled = await Greetings.checkSettings(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         "goodbye"
                     );
                     if (enabled === false || enabled === undefined) {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.SET_GOODBYE_FIRST,
                             MessageType.text
                         );
                         return;
                     } else if (enabled === "OFF") {
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.CURRENTLY_DISABLED,
                             MessageType.text
                         );
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             Msg.message,
                             MessageType.text
                         );
@@ -55,12 +55,12 @@ export default  {
                     }
 
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         GOODBYE.CURRENTLY_ENABLED,
                         MessageType.text
                     );
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         Msg.message,
                         MessageType.text
                     );
@@ -76,11 +76,11 @@ export default  {
                     ) {
                         let switched = "OFF";
                         await Greetings.changeSettings(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             switched
                         );
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.GREETINGS_UNENABLED,
                             MessageType.text
                         );
@@ -93,11 +93,11 @@ export default  {
                     ) {
                         let switched = "ON";
                         await Greetings.changeSettings(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             switched
                         );
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.GREETINGS_ENABLED,
                             MessageType.text
                         );
@@ -105,38 +105,38 @@ export default  {
                     }
                     if (args[0] === "delete") {
                         var Msg: any = await Greetings.deleteMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             "goodbye"
                         );
                         if (Msg === false || Msg === undefined) {
                             client.sendMessage(
-                                BotsApp.chatId,
+                                Athena.chatId,
                                 GOODBYE.SET_GOODBYE_FIRST,
                                 MessageType.text
                             );
                             return;
                         }
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.GOODBYE_DELETED,
                             MessageType.text
                         );
 
                         return;
                     }
-                    let text = BotsApp.body.replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                    let text = Athena.body.replace(
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     );
 
                     var Msg: any = await Greetings.getMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         "goodbye"
                     );
                     if (Msg === false || Msg === undefined) {
-                        await Greetings.setGoodbye(BotsApp.chatId, text);
+                        await Greetings.setGoodbye(Athena.chatId, text);
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.GOODBYE_UPDATED,
                             MessageType.text
                         );
@@ -144,12 +144,12 @@ export default  {
                         return;
                     } else {
                         await Greetings.deleteMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             "goodbye"
                         );
-                        await Greetings.setGoodbye(BotsApp.chatId, text);
+                        await Greetings.setGoodbye(Athena.chatId, text);
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             GOODBYE.GOODBYE_UPDATED,
                             MessageType.text
                         );
@@ -160,7 +160,7 @@ export default  {
                 }
             }
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

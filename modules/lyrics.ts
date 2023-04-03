@@ -1,5 +1,5 @@
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 import got, {Response} from "got";
@@ -13,19 +13,19 @@ export default  {
     description: STRINGS.lyrics.DESCRIPTION,
     extendedDescription: STRINGS.lyrics.EXTENDED_DESCRIPTION,
     demo: { isEnabled: true, text: ".lyrics Stairway to heaven" },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         const processing: proto.WebMessageInfo = await client.sendMessage(
-            BotsApp.chatId,
+            Athena.chatId,
             STRINGS.lyrics.PROCESSING,
             MessageType.text
         );
         try {
             var song: string = "";
-            if (BotsApp.isTextReply) {
-                song = BotsApp.replyMessage;
+            if (Athena.isTextReply) {
+                song = Athena.replyMessage;
             } else if (args.length == 0) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STRINGS.lyrics.NO_ARG,
                     MessageType.text
                 );
@@ -47,7 +47,7 @@ export default  {
 
             try {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     { url: data.thumbnail.genius },
                     MessageType.image,
                     {
@@ -55,11 +55,11 @@ export default  {
                     }
                 );
             } catch (err) {
-                client.sendMessage(BotsApp.chatId, caption, MessageType.text);
+                client.sendMessage(Athena.chatId, caption, MessageType.text);
             }
-            await client.deleteMessage(BotsApp.chatId, {
+            await client.deleteMessage(Athena.chatId, {
                 id: processing.key.id,
-                remoteJid: BotsApp.chatId,
+                remoteJid: Athena.chatId,
                 fromMe: true,
             });
             // return;
@@ -74,22 +74,22 @@ export default  {
                     "\n*Lyrics :*\n" +
                     data.lyrics;
     
-                await client.sendMessage(BotsApp.chatId, caption, MessageType.text);
-                await client.deleteMessage(BotsApp.chatId, {
+                await client.sendMessage(Athena.chatId, caption, MessageType.text);
+                await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }catch(err){
                 await inputSanitization.handleError(
                     err,
                     client,
-                    BotsApp,
+                    Athena,
                     STRINGS.lyrics.NOT_FOUND
                 );
-                return await client.deleteMessage(BotsApp.chatId, {
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }

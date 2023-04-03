@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/BotsApp.ts",
+            "program": "${workspaceFolder}/Athena.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
         }
     ]

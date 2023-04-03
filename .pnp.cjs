@@ -12,14 +12,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     ],\
     "dependencyTreeRoots": [\
       {\
-        "name": "botsapp",\
+        "name": "athena",\
         "reference": "workspace:."\
       }\
     ],\
     "enableTopLevelFallback": true,\
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
-      ["botsapp", ["workspace:."]]\
+      ["athena", ["workspace:."]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -1871,11 +1871,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["botsapp", [\
+      ["athena", [\
         ["workspace:.", {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["botsapp", "workspace:."],\
+            ["athena", "workspace:."],\
             ["@adiwajshing/baileys", "virtual:aaa60f4203f70bb2a80c1dcf19414a56685b15eb63c98d33ee3bc962c40e64c929b3fcd690d574041c6319f25f2328ff493adb71ac41a7594948327c1407d26b#npm:4.4.0"],\
             ["@adiwajshing/keyed-db", "npm:0.2.4"],\
             ["@hapi/boom", "npm:9.1.4"],\

@@ -1,7 +1,7 @@
 import inputSanitization from "../sidekick/input-sanitization.js";
 import STRINGS from "../lib/db.js";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 
@@ -16,28 +16,28 @@ export default  {
             ".tagall Hey everyone! You have been tagged in this message hehe.",
         ],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if(BotsApp.chatId === "917838204238-1632576208@g.us"){
+            if(Athena.chatId === "917838204238-1632576208@g.us"){
                 return; // Disable this for Spam Chat
             }
-            if (!BotsApp.isGroup) {
+            if (!Athena.isGroup) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STRINGS.general.NOT_A_GROUP,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
-            await client.getGroupMetaData(BotsApp.chatId, BotsApp);
+            await client.getGroupMetaData(Athena.chatId, Athena);
             let members = [];
-            for (var i = 0; i < BotsApp.groupMembers.length; i++) {
-                members[i] = BotsApp.groupMembers[i].id;
+            for (var i = 0; i < Athena.groupMembers.length; i++) {
+                members[i] = Athena.groupMembers[i].id;
             }
-            if (BotsApp.isTextReply) {
-                let quote = await client.store.loadMessage(BotsApp.chatId, BotsApp.replyMessageId, undefined);
+            if (Athena.isTextReply) {
+                let quote = await client.store.loadMessage(Athena.chatId, Athena.replyMessageId, undefined);
                 await client.sock.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     {
                         text: STRINGS.tagall.TAG_MESSAGE,
                         mentions: members
@@ -47,27 +47,27 @@ export default  {
                     }
                 )
                 // client.sendMessage(
-                //     BotsApp.chatId,
+                //     Athena.chatId,
                 //     STRINGS.tagall.TAG_MESSAGE,
                 //     MessageType.text,
                 //     {
                 //         contextInfo: {
-                //             stanzaId: BotsApp.replyMessageId,
-                //             participant: BotsApp.replyParticipant,
+                //             stanzaId: Athena.replyMessageId,
+                //             participant: Athena.replyParticipant,
                 //             quotedMessage: {
-                //                 conversation: BotsApp.replyMessage,
+                //                 conversation: Athena.replyMessage,
                 //             },
                 //             mentionedJid: members,
                 //         },
                 //     }
-                // ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                // ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             if (args.length) {
                 client.sendMessage(
-                    BotsApp.chatId,
-                    BotsApp.body.replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                    Athena.chatId,
+                    Athena.body.replace(
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     ),
                     MessageType.text,
@@ -76,12 +76,12 @@ export default  {
                             mentionedJid: members,
                         },
                     }
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
 
             client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 STRINGS.tagall.TAG_MESSAGE,
                 MessageType.text,
                 {
@@ -89,9 +89,9 @@ export default  {
                         mentionedJid: members,
                     },
                 }
-            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+            ).catch(err => inputSanitization.handleError(err, client, Athena));
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
         return;
     },

@@ -3,7 +3,7 @@ import Strings from "../lib/db.js";
 import { Encoder, QRByte, ErrorCorrectionLevel } from "@nuintun/qrcode";
 import fs from "fs";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 const QR = Strings.qr;
@@ -12,21 +12,21 @@ export default  {
     name: "qr",
     description: QR.DESCRIPTION,
     extendedDescription: QR.EXTENDED_DESCRIPTION,
-    demo: { isEnabled: true, text: ".qr Hey, I am BotsApp." },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    demo: { isEnabled: true, text: ".qr Hey, I am Athena." },
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (args.length === 0 && !BotsApp.isTextReply) {
+            if (args.length === 0 && !Athena.isTextReply) {
                 await client
-                    .sendMessage(BotsApp.chatId, QR.INVALID_INPUT, MessageType.text)
-                    .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                    .sendMessage(Athena.chatId, QR.INVALID_INPUT, MessageType.text)
+                    .catch((err) => inputSanitization.handleError(err, client, Athena));
                 return;
             }
 
             let message: string;
-            if (!BotsApp.isTextReply) {
+            if (!Athena.isTextReply) {
                 message = args.join(" ");
             } else {
-                message = BotsApp.replyMessage;
+                message = Athena.replyMessage;
             }
 
             const qrcode: Encoder = new Encoder();
@@ -45,20 +45,20 @@ export default  {
             );
 
             await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 fs.readFileSync(imagePath),
                 MessageType.image,
                 {
                     caption: QR.IMAGE_CAPTION,
                 }).catch((err) =>
-                    inputSanitization.handleError(err, client, BotsApp)
+                    inputSanitization.handleError(err, client, Athena)
                 );
 
             inputSanitization.deleteFiles(imagePath);
             return;
 
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     }
 };

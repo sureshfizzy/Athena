@@ -3,7 +3,7 @@ import format from "string-format";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import {config} from "../config.js";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { AnyMediaMessageContent, AnyMessageContent, proto } from "@adiwajshing/baileys";
 import Command from "../sidekick/command";
@@ -14,7 +14,7 @@ export default  {
     description: HELP.DESCRIPTION,
     extendedDescription: HELP.EXTENDED_DESCRIPTION,
     demo: {isEnabled: false},
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[], commandHandler: Map<string, Command>): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[], commandHandler: Map<string, Command>): Promise<void> {
         try {
             var prefixRegex: any = new RegExp(config.PREFIX, "g");
             var prefixes: string = /\/\^\[(.*)+\]\/\g/g.exec(prefixRegex)[1];
@@ -24,7 +24,7 @@ export default  {
                 commandHandler.forEach(element => {
                     helpMessage += format(HELP.TEMPLATE, prefixes[0] + element.name, element.description);
                 });
-                client.sendMessage(BotsApp.chatId, helpMessage, MessageType.text).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                client.sendMessage(Athena.chatId, helpMessage, MessageType.text).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             helpMessage = HELP.COMMAND_INTERFACE;
@@ -55,17 +55,17 @@ export default  {
                         buttons: buttons,
                         headerType: 1
                     }
-                    await client.sendMessage(BotsApp.chatId, buttonMessage, MessageType.buttonsMessage).catch(err => inputSanitization.handleError(err, client, BotsApp))
+                    await client.sendMessage(Athena.chatId, buttonMessage, MessageType.buttonsMessage).catch(err => inputSanitization.handleError(err, client, Athena))
                     return;
                 }
 
                 helpMessage += format(HELP.COMMAND_INTERFACE_TEMPLATE, triggers, command.extendedDescription);
-                client.sendMessage(BotsApp.chatId, helpMessage, MessageType.text).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                client.sendMessage(Athena.chatId, helpMessage, MessageType.text).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
-            client.sendMessage(BotsApp.chatId, HELP.COMMAND_INTERFACE + "```Invalid Command. Check the correct name from```  *.help*  ```command list.```", MessageType.text).catch(err => inputSanitization.handleError(err, client, BotsApp));
+            client.sendMessage(Athena.chatId, HELP.COMMAND_INTERFACE + "```Invalid Command. Check the correct name from```  *.help*  ```command list.```", MessageType.text).catch(err => inputSanitization.handleError(err, client, Athena));
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

@@ -4,7 +4,7 @@ import {config} from "../config.js";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Client from "../sidekick/client";
 import { downloadContentFromMessage, proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { Transform } from "stream";
 const OCR = STRINGS.ocr;
@@ -13,12 +13,12 @@ export default  {
     name: "ocr",
     description: OCR.DESCRIPTION,
     extendedDescription: OCR.EXTENDED_DESCRIPTION,
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void>{
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void>{
         try {
             
-            if (BotsApp.isImage) {
+            if (Athena.isImage) {
                 const processing = await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     OCR.PROCESSING,
                     MessageType.text
                 );
@@ -36,29 +36,29 @@ export default  {
                     var Msg = text.ParsedResults[0].ParsedText;
                     if (Msg === "") {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             OCR.NO_TEXT,
                             MessageType.text
                         );
-                        return await client.deleteMessage(BotsApp.chatId, {
+                        return await client.deleteMessage(Athena.chatId, {
                             id: processing.key.id,
-                            remoteJid: BotsApp.chatId,
+                            remoteJid: Athena.chatId,
                             fromMe: true,
                         });
                     }
-                    await client.sendMessage(BotsApp.chatId, Msg, MessageType.text);
+                    await client.sendMessage(Athena.chatId, Msg, MessageType.text);
                 } catch (error) {
                     throw error;
                 }
                 inputSanitization.deleteFiles(fileName);
-                return await client.deleteMessage(BotsApp.chatId, {
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
-            }else if (BotsApp.isReplyImage) {
+            }else if (Athena.isReplyImage) {
                 const processing = await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     OCR.PROCESSING,
                     MessageType.text
                 );
@@ -80,36 +80,36 @@ export default  {
                     var Msg = text.ParsedResults[0].ParsedText;
                     if (Msg === "") {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             OCR.NO_TEXT,
                             MessageType.text
                         );
-                        return await client.deleteMessage(BotsApp.chatId, {
+                        return await client.deleteMessage(Athena.chatId, {
                             id: processing.key.id,
-                            remoteJid: BotsApp.chatId,
+                            remoteJid: Athena.chatId,
                             fromMe: true,
                         });
                     }
-                    await client.sendMessage(BotsApp.chatId, Msg, MessageType.text);
+                    await client.sendMessage(Athena.chatId, Msg, MessageType.text);
                 } catch (error) {
                     throw error;
                 }
                 inputSanitization.deleteFiles(fileName);
-                return client.deleteMessage(BotsApp.chatId, {
+                return client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             }else{
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     OCR.ERROR_MSG,
                     MessageType.text
                 );
             }
             setTimeout(async () => {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     OCR.ERROR_MSG,
                     MessageType.text
                 );
@@ -117,7 +117,7 @@ export default  {
             }, 300000);
             return;
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

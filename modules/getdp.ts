@@ -2,7 +2,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import fs from "fs";
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 const GETDP = Strings.getdp;
@@ -12,7 +12,7 @@ export default  {
     description: GETDP.DESCRIPTION,
     extendedDescription: GETDP.EXTENDED_DESCRIPTION,
     demo: { isEnabled: true, text: ".getdp" },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         const getDp = async (jid: string) => {
             let url: string;
             try {
@@ -34,7 +34,7 @@ export default  {
         try {
             let url: string;
             if (!args[0]) {
-                url = await getDp(BotsApp.chatId);
+                url = await getDp(Athena.chatId);
             } else {
                 let jid: string = args[0].split("@")[1] + "@s.whatsapp.net";
                 url = await getDp(jid);
@@ -42,7 +42,7 @@ export default  {
 
             if(typeof(url) === 'object'){
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     fs.readFileSync("./images/default_dp.png"),
                     MessageType.image,
                     {
@@ -53,7 +53,7 @@ export default  {
             }
 
             await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 { url: url },
                 MessageType.image,
                 {
@@ -62,7 +62,7 @@ export default  {
             );
             return
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
             return;
         }
     },

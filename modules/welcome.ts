@@ -3,7 +3,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const WELCOME = Strings.welcome;
 
@@ -15,55 +15,55 @@ export default  {
         isEnabled: true,
         text: [".welcome", ".welcome off", ".welcome delete"],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (!BotsApp.isGroup) {
+            if (!Athena.isGroup) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     WELCOME.NOT_A_GROUP,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
-            await client.getGroupMetaData(BotsApp.chatId, BotsApp);
-            var Msg: any = await Greetings.getMessage(BotsApp.chatId, "welcome");
+            await client.getGroupMetaData(Athena.chatId, Athena);
+            var Msg: any = await Greetings.getMessage(Athena.chatId, "welcome");
             if (args.length == 0) {
                 var enabled = await Greetings.checkSettings(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     "welcome"
                 );
                 try {
                     if (enabled === false || enabled === undefined) {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.SET_WELCOME_FIRST,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         return;
                     } else if (enabled === "OFF") {
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.CURRENTLY_DISABLED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             Msg.message,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         return;
                     }
 
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         WELCOME.CURRENTLY_ENABLED,
                         MessageType.text
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         Msg.message,
                         MessageType.text
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
                 } catch (err) {
                     throw err;
                 }
@@ -76,14 +76,14 @@ export default  {
                     ) {
                         let switched = "OFF";
                         await Greetings.changeSettings(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             switched
                         );
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.GREETINGS_UNENABLED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         return;
                     }
                     if (
@@ -93,63 +93,63 @@ export default  {
                     ) {
                         let switched = "ON";
                         await Greetings.changeSettings(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             switched
                         );
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.GREETINGS_ENABLED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
 
                         return;
                     }
                     if (args[0] === "delete") {
                         var Msg: any = await Greetings.deleteMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             "welcome"
                         );
                         if (Msg === false || Msg === undefined) {
                             client.sendMessage(
-                                BotsApp.chatId,
+                                Athena.chatId,
                                 WELCOME.SET_WELCOME_FIRST,
                                 MessageType.text
-                            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                            ).catch(err => inputSanitization.handleError(err, client, Athena));
                             return;
                         }
 
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.WELCOME_DELETED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
 
                         return;
                     }
-                    let text = BotsApp.body.replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                    let text = Athena.body.replace(
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     );
                     if (Msg === false || Msg === undefined) {
-                        await Greetings.setWelcome(BotsApp.chatId, text);
+                        await Greetings.setWelcome(Athena.chatId, text);
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.WELCOME_UPDATED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
 
                         return;
                     } else {
                         await Greetings.deleteMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             "welcome"
                         );
-                        await Greetings.setWelcome(BotsApp.chatId, text);
+                        await Greetings.setWelcome(Athena.chatId, text);
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             WELCOME.WELCOME_UPDATED,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
 
                         return;
                     }
@@ -158,7 +158,7 @@ export default  {
                 }
             }
         } catch (err) {
-            inputSanitization.handleError(err, client, BotsApp);
+            inputSanitization.handleError(err, client, Athena);
             return;
         }
     },

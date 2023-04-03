@@ -4,7 +4,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import { MessageType } from "../sidekick/message-type.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import Axios from "axios";
 import { writeFile } from 'fs/promises';
 import ffmpeg from "fluent-ffmpeg";
@@ -16,38 +16,38 @@ export default {
     description: quote.DESCRIPTION,
     extendedDescription: quote.EXTENDED_DESCRIPTION,
     demo: { isEnabled: false, },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (!BotsApp.isTextReply || (BotsApp.isTextReply && !BotsApp.replyMessage)) {
+            if (!Athena.isTextReply || (Athena.isTextReply && !Athena.replyMessage)) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     quote.NO_REPLY,
                     MessageType.text
                 )
                 return;
             }
             var downloading: proto.WebMessageInfo = await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 quote.PROCESSING,
                 MessageType.text
             );
             console.log(JSON.stringify(chat));
-            const contact = client.store?.contacts[BotsApp.replyParticipant] || undefined;
-            let quotedReply = BotsApp.replyMessage.replace(/```/g, '');
-            let name = contact?.name || contact?.notify || (BotsApp.replyParticipant === BotsApp.owner ? client.sock.user.name : BotsApp.replyParticipant.split("@")[0]);
+            const contact = client.store?.contacts[Athena.replyParticipant] || undefined;
+            let quotedReply = Athena.replyMessage.replace(/```/g, '');
+            let name = contact?.name || contact?.notify || (Athena.replyParticipant === Athena.owner ? client.sock.user.name : Athena.replyParticipant.split("@")[0]);
             let fileName = './tmp/quote-' + chat.key.id;
             let stickerPath = './tmp/quote-' + chat.key.id + ".webp";
             let url: String;
             try {
-                url = await client.sock.profilePictureUrl(BotsApp.replyParticipant, "image");
+                url = await client.sock.profilePictureUrl(Athena.replyParticipant, "image");
             } catch (err) {
                 try {
-                    url = await client.sock.profilePictureUrl(BotsApp.replyParticipant);
+                    url = await client.sock.profilePictureUrl(Athena.replyParticipant);
                 } catch {
                     if (err.data === 404 || err.data === 401) {
                         url = "https://i.imgur.com/vjLIqgO.png";
                     } else {
-                        await inputSanitization.handleError(err, client, BotsApp);
+                        await inputSanitization.handleError(err, client, Athena);
                     }
                 }
             }
@@ -61,35 +61,35 @@ export default {
                 .save(stickerPath)
                 .on("end", async () => {
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         fs.readFileSync(stickerPath),
                         MessageType.sticker
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
                     await inputSanitization.deleteFiles(
                         fileName,
                         stickerPath
                     );
-                    await client.deleteMessage(BotsApp.chatId, {
+                    await client.deleteMessage(Athena.chatId, {
                         id: downloading.key.id,
-                        remoteJid: BotsApp.chatId,
+                        remoteJid: Athena.chatId,
                         fromMe: true,
-                    }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    }).catch(err => inputSanitization.handleError(err, client, Athena));
                 })
                 .on('error', async (err: any) => {
-                    inputSanitization.handleError(err, client, BotsApp)
-                    await client.deleteMessage(BotsApp.chatId, {
+                    inputSanitization.handleError(err, client, Athena)
+                    await client.deleteMessage(Athena.chatId, {
                         id: downloading.key.id,
-                        remoteJid: BotsApp.chatId,
+                        remoteJid: Athena.chatId,
                         fromMe: true,
-                    }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    }).catch(err => inputSanitization.handleError(err, client, Athena));
                 });
         } catch (err) {
-            await client.deleteMessage(BotsApp.chatId, {
+            await client.deleteMessage(Athena.chatId, {
                 id: downloading.key.id,
-                remoteJid: BotsApp.chatId,
+                remoteJid: Athena.chatId,
                 fromMe: true,
-            }).catch(err => inputSanitization.handleError(err, client, BotsApp));
-            await inputSanitization.handleError(err, client, BotsApp);
+            }).catch(err => inputSanitization.handleError(err, client, Athena));
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

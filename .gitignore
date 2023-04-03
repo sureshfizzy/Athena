@@ -6,7 +6,7 @@ build/Release
 tmp/*
 .vs/
 .idea/
-BotsApp.db
+Athena.db
 yarn-error.log
 dist/
 session.data.json

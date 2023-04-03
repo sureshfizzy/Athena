@@ -4,7 +4,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import Blacklist from "../database/blacklist.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const rbl = Strings.rbl;
 
@@ -13,13 +13,13 @@ export default  {
     description: rbl.DESCRIPTION,
     extendedDescription: rbl.EXTENDED_DESCRIPTION,
     demo: { isEnabled: true, text: ".rbl" },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (BotsApp.isPm && BotsApp.fromMe) {
-                let PersonToRemoveFromBlacklist = BotsApp.chatId;
+            if (Athena.isPm && Athena.fromMe) {
+                let PersonToRemoveFromBlacklist = Athena.chatId;
                 if (!(await Blacklist.getBlacklistUser(PersonToRemoveFromBlacklist, ""))) {
                     client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         format(rbl.NOT_IN_BLACKLIST, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                         MessageType.text
                     );
@@ -27,19 +27,19 @@ export default  {
                 }
                 Blacklist.removeBlacklistUser(PersonToRemoveFromBlacklist, "");
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     format(rbl.PM_ACKNOWLEDGEMENT, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                     MessageType.text
                 );
                 return;
             } else {
-                await client.getGroupMetaData(BotsApp.chatId, BotsApp);
+                await client.getGroupMetaData(Athena.chatId, Athena);
                 if (args.length > 0) {
                     let PersonToRemoveFromBlacklist =
                         await inputSanitization.getCleanedContact(
                             args,
                             client,
-                            BotsApp
+                            Athena
                         );
 
                     if (PersonToRemoveFromBlacklist === undefined) return;
@@ -47,11 +47,11 @@ export default  {
                     if (
                         !(await Blacklist.getBlacklistUser(
                             PersonToRemoveFromBlacklist,
-                            BotsApp.chatId
+                            Athena.chatId
                         ))
                     ) {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             format(rbl.NOT_IN_BLACKLIST, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                             MessageType.text
                         );
@@ -59,24 +59,24 @@ export default  {
                     }
                     Blacklist.removeBlacklistUser(
                         PersonToRemoveFromBlacklist,
-                        BotsApp.chatId
+                        Athena.chatId
                     );
                     client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         format(rbl.GRP_ACKNOWLEDGEMENT, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                         MessageType.text
                     );
                     return;
-                } else if (BotsApp.isTextReply) {
-                    let PersonToRemoveFromBlacklist = BotsApp.replyParticipant;
+                } else if (Athena.isTextReply) {
+                    let PersonToRemoveFromBlacklist = Athena.replyParticipant;
                     if (
                         !(await Blacklist.getBlacklistUser(
                             PersonToRemoveFromBlacklist,
-                            BotsApp.chatId
+                            Athena.chatId
                         ))
                     ) {
                         client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             format(rbl.NOT_IN_BLACKLIST, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                             MessageType.text
                         );
@@ -84,36 +84,36 @@ export default  {
                     }
                     Blacklist.removeBlacklistUser(
                         PersonToRemoveFromBlacklist,
-                        BotsApp.chatId
+                        Athena.chatId
                     );
                     client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         format(rbl.GRP_ACKNOWLEDGEMENT, PersonToRemoveFromBlacklist.substring(0, PersonToRemoveFromBlacklist.indexOf("@"))),
                         MessageType.text
                     );
                     return;
                 } else {
                     if (
-                        !(await Blacklist.getBlacklistUser("", BotsApp.chatId))
+                        !(await Blacklist.getBlacklistUser("", Athena.chatId))
                     ) {
                         client.sendMessage(
-                            BotsApp.chatId,
-                            format(rbl.NOT_IN_BLACKLIST, BotsApp.groupName),
+                            Athena.chatId,
+                            format(rbl.NOT_IN_BLACKLIST, Athena.groupName),
                             MessageType.text
                         );
                         return;
                     }
-                    Blacklist.removeBlacklistUser("", BotsApp.chatId);
+                    Blacklist.removeBlacklistUser("", Athena.chatId);
                     client.sendMessage(
-                        BotsApp.chatId,
-                        format(rbl.GRP_BAN, BotsApp.groupName),
+                        Athena.chatId,
+                        format(rbl.GRP_BAN, Athena.groupName),
                         MessageType.text
                     );
                     return;
                 }
             }
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

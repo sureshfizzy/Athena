@@ -2,7 +2,7 @@ import Strings from "../lib/db.js";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import googleDictionaryApi from "google-dictionary-api";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import format from "string-format";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
@@ -14,14 +14,14 @@ export default  {
     description: MEANING.DESCRIPTION,
     extendedDescription: MEANING.EXTENDED_DESCRIPTION,
     demo: {isEnabled: true, text: ".meaning meaning"},
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             var word: string = "";
-            if (BotsApp.isTextReply) {
-                word = BotsApp.replyMessage;
+            if (Athena.isTextReply) {
+                word = Athena.replyMessage;
             } else if (args.length === 0) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MEANING.NO_ARG,
                     MessageType.text
                 );
@@ -41,24 +41,24 @@ export default  {
                     const msg: string =
                         "*Word :* " + results[0].word + "\n\n*Meaning :*" + mean;
                     client
-                        .sendMessage(BotsApp.chatId, msg, MessageType.text)
+                        .sendMessage(Athena.chatId, msg, MessageType.text)
                         .catch((err) =>
-                            inputSanitization.handleError(err, client, BotsApp)
+                            inputSanitization.handleError(err, client, Athena)
                         );
                 })
                 .catch(() => {
                     client
                         .sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             format(MEANING.NOT_FOUND, word),
                             MessageType.text
                         )
                         .catch((err) =>
-                            inputSanitization.handleError(err, client, BotsApp)
+                            inputSanitization.handleError(err, client, Athena)
                         );
                 });
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

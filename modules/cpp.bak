@@ -5,7 +5,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import { MessageType } from "../sidekick/message-type.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import fs from "fs";
 import { promisify } from 'util';
 import config from "../config.js";
@@ -18,24 +18,24 @@ export default  {
     name: "cpp",
     description: CPP.DESCRIPTION,
     extendedDescription: CPP.EXTENDED_DESCRIPTION,
-    demo: { isEnabled: true, text: ['.cpp printf("Hello from BotsApp!");', '.cpp float x, y;\ncin >> x >> y;\ncout<<"sum of provide numbers is -> " << x + y; -i 6 0.9', '.cpp #include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n  cout << "BotsApp is the best!" << endl;\n}'] },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    demo: { isEnabled: true, text: ['.cpp printf("Hello from Athena!");', '.cpp float x, y;\ncin >> x >> y;\ncout<<"sum of provide numbers is -> " << x + y; -i 6 0.9', '.cpp #include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n  cout << "Athena is the best!" << endl;\n}'] },
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             if (args[0] == null) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     CPP.NO_INPUT,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             var processing = await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 CPP.PROCESSING,
                 MessageType.text
             )
-            var body = BotsApp.body.replace(
-                BotsApp.body[0] + BotsApp.commandName + " ",
+            var body = Athena.body.replace(
+                Athena.body[0] + Athena.commandName + " ",
                 ""
             );
             let input;
@@ -53,8 +53,8 @@ export default  {
             } else {
                 cpp = code;
             }
-            let filename = './tmp/cpp-botsapp' + chat.key.id +'.cpp';
-            let outname = './tmp/cpp-botsapp' + chat.key.id +'.out';
+            let filename = './tmp/cpp-Athena' + chat.key.id +'.cpp';
+            let outname = './tmp/cpp-Athena' + chat.key.id +'.out';
             fs.writeFileSync(filename, cpp);
             var out = {
                 stderr: 'N/A',
@@ -81,13 +81,13 @@ export default  {
                             out.stdout = "N/A"
                         }
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             format(CPP.OUTPUT_TEMPLATE, out),
                             MessageType.text
                         )
-                        await client.deleteMessage(BotsApp.chatId, {
+                        await client.deleteMessage(Athena.chatId, {
                             id: processing.key.id,
-                            remoteJid: BotsApp.chatId,
+                            remoteJid: Athena.chatId,
                             fromMe: true,
                         })
                     }
@@ -100,13 +100,13 @@ export default  {
             } catch (err) {
                 out.stderr = err.stderr
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     format(CPP.OUTPUT_TEMPLATE, out),
                     MessageType.text
                 )
-                return await client.deleteMessage(BotsApp.chatId, {
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 })
             }
@@ -122,7 +122,7 @@ export default  {
                 }
             }, 10000);
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     }
 };

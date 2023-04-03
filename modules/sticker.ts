@@ -5,7 +5,7 @@ import { MessageType } from "../sidekick/message-type.js";
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client";
 import { downloadContentFromMessage, proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { Transform } from "stream";
 
 const STICKER = Strings.sticker;
@@ -15,13 +15,13 @@ export default {
     description: STICKER.DESCRIPTION,
     extendedDescription: STICKER.EXTENDED_DESCRIPTION,
     demo: { isEnabled: false },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         // Task starts here
         try {
             // Function to convert media to sticker
             const convertToSticker = async (imageId: string, replyChat: { message: any; type: any; }): Promise<void> => {
                 var downloading: proto.WebMessageInfo = await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STICKER.DOWNLOADING,
                     MessageType.text
                 );
@@ -30,7 +30,7 @@ export default {
                 await inputSanitization.saveBuffer(fileName, stream);
                 const stickerPath: string = "./tmp/st-" + imageId + ".webp";
                 // If is an image
-                if (BotsApp.type === "image" || BotsApp.isReplyImage) {
+                if (Athena.type === "image" || Athena.isReplyImage) {
                     ffmpeg(fileName)
                         .outputOptions(["-y", "-vcodec libwebp"])
                         .videoFilters(
@@ -39,27 +39,27 @@ export default {
                         .save(stickerPath)
                         .on("end", async () => {
                             await client.sendMessage(
-                                BotsApp.chatId,
+                                Athena.chatId,
                                 fs.readFileSync(stickerPath),
                                 MessageType.sticker
-                            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                            ).catch(err => inputSanitization.handleError(err, client, Athena));
                             await inputSanitization.deleteFiles(
                                 fileName,
                                 stickerPath
                             );
-                            await client.deleteMessage(BotsApp.chatId, {
+                            await client.deleteMessage(Athena.chatId, {
                                 id: downloading.key.id,
-                                remoteJid: BotsApp.chatId,
+                                remoteJid: Athena.chatId,
                                 fromMe: true,
-                            }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                            }).catch(err => inputSanitization.handleError(err, client, Athena));
                         })
                         .on('error', async (err: any) => {
-                            inputSanitization.handleError(err, client, BotsApp)
-                            await client.deleteMessage(BotsApp.chatId, {
+                            inputSanitization.handleError(err, client, Athena)
+                            await client.deleteMessage(Athena.chatId, {
                                 id: downloading.key.id,
-                                remoteJid: BotsApp.chatId,
+                                remoteJid: Athena.chatId,
                                 fromMe: true,
-                            }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                            }).catch(err => inputSanitization.handleError(err, client, Athena));
                         });
                     return;
                 }
@@ -83,63 +83,63 @@ export default {
                     .save(stickerPath)
                     .on("end", async (err: any) => {
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             fs.readFileSync(stickerPath),
                             MessageType.sticker
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         await inputSanitization.deleteFiles(fileName, stickerPath);
-                        await client.deleteMessage(BotsApp.chatId, {
+                        await client.deleteMessage(Athena.chatId, {
                             id: downloading.key.id,
-                            remoteJid: BotsApp.chatId,
+                            remoteJid: Athena.chatId,
                             fromMe: true,
-                        }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        }).catch(err => inputSanitization.handleError(err, client, Athena));
                     })
                     .on('error', async (err: any) => {
-                        inputSanitization.handleError(err, client, BotsApp)
-                        await client.deleteMessage(BotsApp.chatId, {
+                        inputSanitization.handleError(err, client, Athena)
+                        await client.deleteMessage(Athena.chatId, {
                             id: downloading.key.id,
-                            remoteJid: BotsApp.chatId,
+                            remoteJid: Athena.chatId,
                             fromMe: true,
-                        }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        }).catch(err => inputSanitization.handleError(err, client, Athena));
                     });
                 return;
             };
 
             // User sends media message along with command in caption
-            if (BotsApp.isImage || BotsApp.isGIF || BotsApp.isVideo) {
+            if (Athena.isImage || Athena.isGIF || Athena.isVideo) {
                 var replyChatObject = {
-                    message: (BotsApp.type === 'image' ? chat.message.imageMessage : chat.message.videoMessage),
-                    type: BotsApp.type
+                    message: (Athena.type === 'image' ? chat.message.imageMessage : chat.message.videoMessage),
+                    type: Athena.type
                 };
                 var imageId: string = chat.key.id;
                 convertToSticker(imageId, replyChatObject);
             }
             // Replied to an image , gif or video
             else if (
-                BotsApp.isReplyImage ||
-                BotsApp.isReplyGIF ||
-                BotsApp.isReplyVideo
+                Athena.isReplyImage ||
+                Athena.isReplyGIF ||
+                Athena.isReplyVideo
             ) {
                 var replyChatObject = {
-                    message: (BotsApp.isReplyImage ? chat.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : chat.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage),
-                    type: (BotsApp.isReplyImage ? 'image' : 'video')
+                    message: (Athena.isReplyImage ? chat.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : chat.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage),
+                    type: (Athena.isReplyImage ? 'image' : 'video')
                 };
                 var imageId: string =
                     chat.message.extendedTextMessage.contextInfo.stanzaId;
                 convertToSticker(imageId, replyChatObject);
             } else {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     STICKER.TAG_A_VALID_MEDIA_MESSAGE,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
             }
             return;
         } catch (err) {
             await inputSanitization.handleError(
                 err,
                 client,
-                BotsApp,
+                Athena,
                 STICKER.TAG_A_VALID_MEDIA_MESSAGE
             );
         }

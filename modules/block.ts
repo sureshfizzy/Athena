@@ -1,7 +1,7 @@
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js"
 import inputSanitization from "../sidekick/input-sanitization.js";
 const Reply = Strings.block;
@@ -10,32 +10,32 @@ export default  {
     name: "block",
     description: Reply.DESCRIPTION,
     extendedDescription: Reply.EXTENDED_DESCRIPTION,
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             const reply: proto.Message.IExtendedTextMessage = chat.message.extendedTextMessage;
             var contact: string = "";
-            if(args.length == 0 && !BotsApp.isTextReply){
+            if(args.length == 0 && !Athena.isTextReply){
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.MESSAGE_NOT_TAGGED,
                     MessageType.text
                 );
                 return;
             }
 
-            if (!(args.length > 0) && BotsApp.isTextReply) {
+            if (!(args.length > 0) && Athena.isTextReply) {
                 contact = reply.contextInfo.participant.split("@")[0];
             } else {
                 contact = await inputSanitization.getCleanedContact(
                     args,
                     client,
-                    BotsApp
+                    Athena
                 );
             }
 
-            if (contact === BotsApp.owner.split("@")[0]) {
+            if (contact === Athena.owner.split("@")[0]) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.NOT_BLOCK_BOT,
                     MessageType.text
                 );
@@ -44,7 +44,7 @@ export default  {
 
             if(contact === ""){
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.MESSAGE_NOT_TAGGED,
                     MessageType.text
                 );
@@ -53,7 +53,7 @@ export default  {
             var JID: string = contact + "@s.whatsapp.net";
             client.sock.updateBlockStatus(JID, "block");
             client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 "*" + contact + " blocked successfully.*",
                 MessageType.text
             );
@@ -61,7 +61,7 @@ export default  {
             await inputSanitization.handleError(
                 err,
                 client,
-                BotsApp,
+                Athena,
                 Reply.MESSAGE_NOT_TAGGED
             );
         }

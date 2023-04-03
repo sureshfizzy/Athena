@@ -1,16 +1,13 @@
 <p align="center">
-  <img src="images/BotsApp_Logo.png" height="400px"/>
+  <img src="images/Athena_Logo.png" height="400px"/>
 </p>
 
 
-# 💠[BotsApp](https://mybotsapp.com/)💠
-> Your Personal Assisstant, on WhatsApp!
+# 💠[Athena]💠
+> AI Powered Assisstant, on WhatsApp!
 ---
 ![GitHub top language](https://img.shields.io/github/languages/top/Prince-Mendiratta/BotsApp) [![GitHub release](https://img.shields.io/github/release/Prince-Mendiratta/BotsApp.svg)](https://github.com/bkimminich/juice-shop/releases/latest)
  ![GitHub contributors](https://img.shields.io/github/contributors/Prince-Mendiratta/BotsApp) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Prince-Mendiratta/BotsApp) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Prince-Mendiratta/BotsApp) ![GitHub Repo stars](https://img.shields.io/github/stars/Prince-Mendiratta/BotsApp?style=social) ![GitHub repo size](https://img.shields.io/github/repo-size/Prince-Mendiratta/BotsApp)
- 
-
-![Docker Pulls](https://img.shields.io/docker/pulls/princemendiratta/botsapp?style=flat-square&label=Docker+Pulls) ![Docker Image Size](https://img.shields.io/docker/image-size/princemendiratta/botsapp?style=flat-square&label=Docker+Image+Size)
 
 BotsApp is an optimized and easy-to-use WhatsApp UserBot written in Node.js.
 
@@ -51,7 +48,7 @@ Make sure you are logged in to open ai.
 
 <b>Only local deployment is working for now!</b>
 
-### Easiest Way
+### Easiest Way for BotsApp
 
 You can deploy BotsApp in minimal time without any prior knowledge using this method.
 
@@ -94,7 +91,7 @@ To use this method, you will need ffmpeg, nodejs, npm installed on your device.
 To run the bot on your device manually, you can use the following commands -
 
 ```bash
-git clone https://github.com/Prince-Mendiratta/BotsApp.git
+git clone https://github.com/sureshfizzy/Athena.git
 cd BotsApp
 yarn
 npm start
@@ -103,7 +100,7 @@ npm start
 ## Scan QR Code again
 If you're having issues when running locally it is recommended to scan the code again. To get the QR code again, follow these commands -
 ```
-rm -rf BotsApp.db session.data.json
+rm -rf Athena.db session.data.json
 npm start
 ```
 

@@ -1,6 +1,6 @@
 import {GroupParticipant} from '@adiwajshing/baileys'
 
-class BotsApp {
+class Athena {
 
     mimeType: string;
     type: string;
@@ -40,4 +40,4 @@ class BotsApp {
     isReplyAnimatedSticker: boolean
 }
 
-export default BotsApp;
+export default Athena;

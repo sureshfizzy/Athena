@@ -4,7 +4,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import String from "../lib/db.js";
 import Client from "../sidekick/client";
 import { downloadContentFromMessage, proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { Transform } from "stream";
 const REPLY = String.setdp;
@@ -14,32 +14,32 @@ export default  {
     description: REPLY.DESCRIPTION,
     extendedDescription: REPLY.EXTENDED_DESCRIPTION,
     demo: { isEnabled: false },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (!BotsApp.isGroup) {
+            if (!Athena.isGroup) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     REPLY.NOT_A_GROUP,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
-            if (!BotsApp.isImage && !BotsApp.isReplyImage) {
+            if (!Athena.isImage && !Athena.isReplyImage) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     REPLY.NOT_AN_IMAGE,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             var update = await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 REPLY.ICON_CHANGED,
                 MessageType.text
             );
             var imageId = chat.key.id;
             const fileName = "./tmp/change_pic" + imageId;
-            if (BotsApp.isImage) {
+            if (Athena.isImage) {
                 const stream: Transform = await downloadContentFromMessage(chat.message.imageMessage, 'image');
                 await inputSanitization.saveBuffer(fileName, stream);
             } else {
@@ -56,20 +56,20 @@ export default  {
                 .save(imagePath)
                 .on("end", async () => {
                     client.sock.updateProfilePicture(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         fs.readFileSync(imagePath)
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
 
                     //Image and message deletion
                     inputSanitization.deleteFiles(fileName, imagePath);
-                    return await client.deleteMessage(BotsApp.chatId, {
+                    return await client.deleteMessage(Athena.chatId, {
                         id: update.key.id,
-                        remoteJid: BotsApp.chatId,
+                        remoteJid: Athena.chatId,
                         fromMe: true,
-                    }).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    }).catch(err => inputSanitization.handleError(err, client, Athena));
                 });
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
         return;
     },

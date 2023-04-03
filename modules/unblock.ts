@@ -1,6 +1,6 @@
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js"
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Strings from "../lib/db.js";
@@ -11,11 +11,11 @@ export default  {
     description: Reply.DESCRIPTION,
     extendedDescription: Reply.EXTENDED_DESCRIPTION,
     demo: { isEnabled: false },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try{
-            if (!BotsApp.isTextReply && typeof args[0] == "undefined") {
+            if (!Athena.isTextReply && typeof args[0] == "undefined") {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.MESSAGE_NOT_TAGGED,
                     MessageType.text
                 );
@@ -29,13 +29,13 @@ export default  {
                 contact = await inputSanitization.getCleanedContact(
                     args,
                     client,
-                    BotsApp
+                    Athena
                 );
             }
 
-            if (contact === BotsApp.owner.split("@")[0]) {
+            if (contact === Athena.owner.split("@")[0]) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.NOT_UNBLOCK_BOT,
                     MessageType.text
                 );
@@ -44,7 +44,7 @@ export default  {
 
             if(contact === ""){
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     Reply.MESSAGE_NOT_TAGGED,
                     MessageType.text
                 );
@@ -53,7 +53,7 @@ export default  {
                 var JID = contact + "@s.whatsapp.net";
                 client.sock.updateBlockStatus(JID, "unblock");
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     "*" + contact + " unblocked successfully.*",
                     MessageType.text
                 );
@@ -62,7 +62,7 @@ export default  {
             await inputSanitization.handleError(
                 err,
                 client,
-                BotsApp,
+                Athena,
                 Reply.MESSAGE_NOT_TAGGED
             );
         }

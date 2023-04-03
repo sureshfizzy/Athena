@@ -4,7 +4,7 @@ import * as Carbon from "unofficial-carbon-now";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import format from "string-format";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 
@@ -17,12 +17,12 @@ export default  {
     demo: {
         isEnabled: true,
         text: [
-            ".carbon Hi! Welcome to BotsApp.",
-            '.carbon #include <iostream> \nint main() \n{\n   std::cout << "Hello BotsApp!"; \n   return 0;\n} -t yeti',
+            ".carbon Hi! Welcome to Athena.",
+            '.carbon #include <iostream> \nint main() \n{\n   std::cout << "Hello Athena!"; \n   return 0;\n} -t yeti',
             ".carbon -t",
         ],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             let themes: string[] = [
                 "3024 night",
@@ -56,27 +56,27 @@ export default  {
             ];
             let code: string = "";
             let themeInput: string;
-            if (args[0] == null && !BotsApp.isTextReply) {
+            if (args[0] == null && !Athena.isTextReply) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     CARBON.NO_INPUT,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
-            } else if (BotsApp.isTextReply && !BotsApp.replyMessage) {
+            } else if (Athena.isTextReply && !Athena.replyMessage) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     CARBON.INVALID_REPLY,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
-            } else if (BotsApp.isTextReply) {
-                code = BotsApp.replyMessage;
+            } else if (Athena.isTextReply) {
+                code = Athena.replyMessage;
                 themeInput = themes[Math.floor(Math.random() * themes.length)];
             } else {
                 try {
-                    let text: string = BotsApp.body.replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                    let text: string = Athena.body.replace(
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     );
                     if (text[0] === "-" && text[1] === "t") {
@@ -88,7 +88,7 @@ export default  {
                                 counter += 1;
                             })
                             await client.sendMessage(
-                                BotsApp.chatId,
+                                Athena.chatId,
                                 "```" + message + "```",
                                 MessageType.text
                             )
@@ -96,31 +96,31 @@ export default  {
                         }
                         else{
                             await client.sendMessage(
-                                BotsApp.chatId,
+                                Athena.chatId,
                                 CARBON.NO_INPUT,
                                 MessageType.text
-                            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                            ).catch(err => inputSanitization.handleError(err, client, Athena));
                             return;
                         }
                     }
-                    let body: string[] = BotsApp.body.split("-t");
+                    let body: string[] = Athena.body.split("-t");
                     code = body[0].replace(
-                        BotsApp.body[0] + BotsApp.commandName + " ",
+                        Athena.body[0] + Athena.commandName + " ",
                         ""
                     );
                     themeInput = body[1].substring(1);
                     if (!themes.includes(themeInput)) {
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             CARBON.INVALID_THEME,
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         return;
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {
-                        code = BotsApp.body.replace(
-                            BotsApp.body[0] + BotsApp.commandName + " ",
+                        code = Athena.body.replace(
+                            Athena.body[0] + Athena.commandName + " ",
                             ""
                         );
                         themeInput =
@@ -130,7 +130,7 @@ export default  {
             }
             try {
                 const processing: proto.WebMessageInfo = await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     CARBON.CARBONIZING,
                     MessageType.text
                 );
@@ -140,23 +140,23 @@ export default  {
                     .setTheme(themeInput);
                 const output = await Carbon.generateCarbon(carbon);
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     output,
                     MessageType.image,
                     {
                         caption: format(CARBON.OUTPUT, themeInput),
                     }
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
-                return await client.deleteMessage(BotsApp.chatId, {
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
+                return await client.deleteMessage(Athena.chatId, {
                     id: processing.key.id,
-                    remoteJid: BotsApp.chatId,
+                    remoteJid: Athena.chatId,
                     fromMe: true,
                 });
             } catch (err) {
                 throw err;
             }
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };

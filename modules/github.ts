@@ -2,7 +2,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import STRINGS from "../lib/db.js";
 import got, {Response} from "got";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
 
@@ -11,15 +11,15 @@ export default  {
     description: STRINGS.github.DESCRIPTION,
     extendedDescription: STRINGS.github.EXTENDED_DESCRIPTION,
     demo: { isEnabled: true, text: ".github Prince-Mendiratta" },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             let user_name: string = "";
-            if (BotsApp.isTextReply) {
-                user_name = BotsApp.replyMessage;
+            if (Athena.isTextReply) {
+                user_name = Athena.replyMessage;
             } else {
                 if (args.length == 0) {
                     client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         STRINGS.github.NO_ARG_ERROR,
                         MessageType.text
                     );
@@ -28,7 +28,7 @@ export default  {
                 user_name = args[0];
             }
             var fetching: proto.WebMessageInfo = await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 STRINGS.github.FETCHING,
                 MessageType.text
             );
@@ -79,7 +79,7 @@ export default  {
             }
             try {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     {
                         url: user.avatar_url,
                     },
@@ -89,23 +89,23 @@ export default  {
                     }
                 );
             } catch (err) {
-                client.sendMessage(BotsApp.chatId, caption, MessageType.text);
+                client.sendMessage(Athena.chatId, caption, MessageType.text);
             }
-            return await client.deleteMessage(BotsApp.chatId, {
+            return await client.deleteMessage(Athena.chatId, {
                 id: fetching.key.id,
-                remoteJid: BotsApp.chatId,
+                remoteJid: Athena.chatId,
                 fromMe: true,
             });
         } catch (err) {
             await inputSanitization.handleError(
                 err,
                 client,
-                BotsApp,
+                Athena,
                 STRINGS.github.ERROR_MSG
             );
-            return await client.deleteMessage(BotsApp.chatId, {
+            return await client.deleteMessage(Athena.chatId, {
                 id: fetching.key.id,
-                remoteJid: BotsApp.chatId,
+                remoteJid: Athena.chatId,
                 fromMe: true,
             });
         }

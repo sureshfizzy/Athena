@@ -1,7 +1,7 @@
 import STRINGS from "../lib/db.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Axios from "axios";
@@ -22,7 +22,7 @@ export default  {
     async handle(
         client: Client,
         chat: proto.IWebMessageInfo,
-        BotsApp: BotsApp,
+        Athena: Athena,
         args: string[]
     ): Promise<void> {
         /*******************************************
@@ -49,18 +49,18 @@ export default  {
          ********************************************/
         if (args.length === 0) {
             await client
-                .sendMessage(BotsApp.chatId, NEWS.NO_COMMMAND, MessageType.text)
-                .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                .sendMessage(Athena.chatId, NEWS.NO_COMMMAND, MessageType.text)
+                .catch((err) => inputSanitization.handleError(err, client, Athena));
             return;
         }
         if (args[0] == "help") {
             await client
                 .sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     NEWS.EXTENDED_DESCRIPTION,
                     MessageType.text
                 )
-                .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                .catch((err) => inputSanitization.handleError(err, client, Athena));
             return;
         }
         if (args[0] == "search") {
@@ -90,8 +90,8 @@ export default  {
                 message = "```Sorry, no publication found by that name!```"
             }
             await client
-                .sendMessage(BotsApp.chatId, message, MessageType.text)
-                .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                .sendMessage(Athena.chatId, message, MessageType.text)
+                .catch((err) => inputSanitization.handleError(err, client, Athena));
             return;
         }
         if (args[0] == "fetch") {
@@ -99,8 +99,8 @@ export default  {
             var searchTerm = args.join(" ");
             if (!searchTerm) {
                 await client
-                    .sendMessage(BotsApp.chatId, NEWS.NO_PUB_NAME, MessageType.text)
-                    .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                    .sendMessage(Athena.chatId, NEWS.NO_PUB_NAME, MessageType.text)
+                    .catch((err) => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             let searchResponse;
@@ -121,17 +121,17 @@ export default  {
             let message =
                 "```Your requested publication``` *" +
                 foundPub +
-                "* ```is being fetched by BotsApp, this may take some time, please be patient!```";
+                "* ```is being fetched by Athena, this may take some time, please be patient!```";
             if (!foundPub) {
                 message = "```Sorry, no publication found by that name!```";
                 await client
-                    .sendMessage(BotsApp.chatId, message, MessageType.text)
-                    .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                    .sendMessage(Athena.chatId, message, MessageType.text)
+                    .catch((err) => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             await client
                 .sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     {
                         url:
                             config.NEWS_API_URL + "news?pubName=" + foundPub + "&format=epub",
@@ -143,11 +143,11 @@ export default  {
                         caption: message,
                     }
                 )
-                .catch((err) => inputSanitization.handleError(err, client, BotsApp));
-            message = "```Your requested publication fetched by BotsApp``` ☝️";
+                .catch((err) => inputSanitization.handleError(err, client, Athena));
+            message = "```Your requested publication fetched by Athena``` ☝️";
             await client
-                .sendMessage(BotsApp.chatId, message, MessageType.text)
-                .catch((err) => inputSanitization.handleError(err, client, BotsApp));
+                .sendMessage(Athena.chatId, message, MessageType.text)
+                .catch((err) => inputSanitization.handleError(err, client, Athena));
             return;
         }
     },

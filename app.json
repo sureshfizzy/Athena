@@ -1,23 +1,22 @@
 {
-    "name": "BotsApp",
+    "name": "Athena",
     "description": "The most user friendly and easy to use WhatsApp bot.",
     "logo": "https://i.imgur.com/xw9lULI.jpg",
     "keywords": [
         "Whatsapp",
         "WhatsApp bot",
         "userbot",
-        "BotsApp",
+        "Athena",
         "nodejs",
         "WhatsApp Multi Device",
         "WhatsApp Multi Device bot"
     ],
-    "repository": "https://github.com/Prince-Mendiratta/BotsApp",
-    "website": "https://mybotsapp.com",
+    "repository": "https://github.com/sureshfizzy/Athena",
     "success_url": "",
     "stack": "container",
     "env": {
         "STRING_SESSION": {
-            "description": "Your BotsApp session. Can be obtained via website or running npm start locally.",
+            "description": "Your Athena session. Can be obtained via website or running npm start locally.",
             "value": "",
             "required": true
         },
@@ -71,7 +70,7 @@
         }
     ],
     "formation": {
-        "botsapp": {
+        "athena": {
             "quantity": 1,
             "size": "free"
         }

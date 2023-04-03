@@ -7,7 +7,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import STRINGS from "../lib/db.js";
 import Client from "../sidekick/client";
 import { proto } from "@adiwajshing/baileys";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 
 const SONG = STRINGS.song;
@@ -24,18 +24,18 @@ export default {
             ".song https://youtu.be/pWiI9gabW9k",
         ],
     },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
             if (args.length === 0) {
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     SONG.ENTER_SONG,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             var reply = await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 SONG.DOWNLOADING,
                 MessageType.text
             );
@@ -53,10 +53,10 @@ export default {
                 } catch (err) {
                     console.error(err);
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         "Invalid song. Please try again.",
                         MessageType.text
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
                     return;
                 }
             } else {
@@ -64,10 +64,10 @@ export default {
                 song = song.all;
                 if (song.length < 1) {
                     await client.sendMessage(
-                        BotsApp.chatId,
+                        Athena.chatId,
                         "Song not found. Please try again.",
                         MessageType.text
-                    ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    ).catch(err => inputSanitization.handleError(err, client, Athena));
                     return;
                 }
                 Id = song[0].url;
@@ -83,43 +83,43 @@ export default {
                     .saveToFile(`tmp/${chat.key.id}.mp3`)
                     .on("end", async () => {
                         var upload = await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             SONG.UPLOADING,
                             MessageType.text
                         );
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             {
                                 url: `tmp/${chat.key.id}.mp3`,
                                 mimetype: "audio/mpeg",
                             },
                             MessageType.audio
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                         fs.unlinkSync(`tmp/${chat.key.id}.mp3`);
                     })
                     .on("error", async (err) => {
                         console.error(err);
                         await client.sendMessage(
-                            BotsApp.chatId,
+                            Athena.chatId,
                             "Error downloading song. Please try again.",
                             MessageType.text
-                        ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                        ).catch(err => inputSanitization.handleError(err, client, Athena));
                     });
             } catch (err) {
                 console.error(err);
                 await client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     "Error downloading song. Please try again.",
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
             }
         } catch (err) {
             console.error(err);
             await client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 "Error while processing your request. Please try again.",
                 MessageType.text
-            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+            ).catch(err => inputSanitization.handleError(err, client, Athena));
         } finally {
             fs.unlink(`tmp/${chat.key.id}.mp3`, (err) => {
                 if (err) {

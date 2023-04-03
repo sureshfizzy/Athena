@@ -1,6 +1,6 @@
 import {AnyMessageContent, GroupMetadata, GroupParticipant, proto, WASocket} from "@adiwajshing/baileys";
 import {MessageType} from "./message-type.js";
-import BotsApp from "./sidekick.js";
+import Athena from "./sidekick.js";
 
 class Client {
     sock: WASocket;
@@ -114,7 +114,7 @@ class Client {
         });
     };
 
-    async getGroupMetaData(jid: string, BotsApp: BotsApp) {
+    async getGroupMetaData(jid: string, Athena: Athena) {
         const groupMetadata: GroupMetadata = jid.endsWith("@g.us") ? await this.sock.groupMetadata(jid) : null;
         const getGroupAdmins = (participants: GroupParticipant[]): string[] => {
             var admins: string[] = [];
@@ -124,12 +124,12 @@ class Client {
             // console.log("ADMINS -> " + admins);
             return admins;
         }
-        BotsApp.groupName = BotsApp.isGroup ? groupMetadata.subject : null;
-        BotsApp.groupMembers = BotsApp.isGroup ? groupMetadata.participants : null;
-        BotsApp.groupAdmins = BotsApp.isGroup ? getGroupAdmins(BotsApp.groupMembers) : null;
-        BotsApp.groupId = BotsApp.isGroup ? groupMetadata.id : null;
-        BotsApp.isBotGroupAdmin = BotsApp.isGroup ? (BotsApp.groupAdmins.includes(BotsApp.owner)) : false;
-        BotsApp.isSenderGroupAdmin = BotsApp.isGroup ? (BotsApp.groupAdmins.includes(BotsApp.sender)) : false;
+        Athena.groupName = Athena.isGroup ? groupMetadata.subject : null;
+        Athena.groupMembers = Athena.isGroup ? groupMetadata.participants : null;
+        Athena.groupAdmins = Athena.isGroup ? getGroupAdmins(Athena.groupMembers) : null;
+        Athena.groupId = Athena.isGroup ? groupMetadata.id : null;
+        Athena.isBotGroupAdmin = Athena.isGroup ? (Athena.groupAdmins.includes(Athena.owner)) : false;
+        Athena.isSenderGroupAdmin = Athena.isGroup ? (Athena.groupAdmins.includes(Athena.sender)) : false;
     }
 }
 

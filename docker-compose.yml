@@ -2,14 +2,14 @@ version: '3.3'
 
 services:
 
-  botsapp:
-    container_name: botsapp
+  athena:
+    container_name: athena
     build:
       context: .
       dockerfile: local.Dockerfile
     volumes:
-      - '.:/BotsApp'
-      - '/BotsApp/node_modules'
+      - '.:/Athena'
+      - '/Athena/node_modules'
     restart: 'always'
     #    ports:
     #      - '8031:8890'

@@ -78,7 +78,7 @@ async function main() {
         console.log(chalk.yellowBright.bold("[INFO] Syncing Database..."));
         await sequelize.sync();
         console.log(chalk.greenBright.bold("[INFO] All models were synchronized successfully."));
-        console.log(chalk.greenBright.bold("[INFO] Connected! Welcome to BotsApp"));
+        console.log(chalk.greenBright.bold("[INFO] Connected! Welcome to Athena"));
         client.sendMessage(
             client.user.jid,
             GENERAL.SUCCESSFUL_CONNECTION.format({
@@ -133,26 +133,26 @@ async function main() {
         chat = chat.messages.all()[0];
         var sender = chat.key.remoteJid;
         const groupMetadata = sender.endsWith("@g.us") ? await client.groupMetadata(sender) : '';
-        var BotsApp = wa.resolve(chat, client, groupMetadata);
-        // console.log(BotsApp);
-        if (BotsApp.isCmd) {
-            let isBlacklist = await Blacklist.getBlacklistUser(BotsApp.sender, BotsApp.chatId);
-            const cleared = await clearance(BotsApp, client, isBlacklist);
+        var Athena = wa.resolve(chat, client, groupMetadata);
+        // console.log(Athena);
+        if (Athena.isCmd) {
+            let isBlacklist = await Blacklist.getBlacklistUser(Athena.sender, Athena.chatId);
+            const cleared = await clearance(Athena, client, isBlacklist);
             if (!cleared) {
                 return;
             }
-            console.log(chalk.redBright.bold(`[INFO] ${BotsApp.commandName} command executed.`));
-            const command = commandHandler.get(BotsApp.commandName);
-            var args = BotsApp.body.trim().split(/\s+/).slice(1);
+            console.log(chalk.redBright.bold(`[INFO] ${Athena.commandName} command executed.`));
+            const command = commandHandler.get(Athena.commandName);
+            var args = Athena.body.trim().split(/\s+/).slice(1);
             // console.log("ARGS -> " + args);
             // args.forEach(arg => console.log("arg -> " + arg  + "  type -> " + typeof(arg)));
             // console.log("-------------------------------------------")
             if (!command) {
-                client.sendMessage(BotsApp.chatId, "```Woops, invalid command! Use```  *.help*  ```to display the command list.```", MessageType.text);
+                client.sendMessage(Athena.chatId, "```Woops, invalid command! Use```  *.help*  ```to display the command list.```", MessageType.text);
                 return;
-            } else if (command && BotsApp.commandName == "help") {
+            } else if (command && Athena.commandName == "help") {
                 try {
-                    command.handle(client, chat, BotsApp, args, commandHandler);
+                    command.handle(client, chat, Athena, args, commandHandler);
                     return;
                 } catch (err) {
                     console.log(chalk.red("[ERROR] ", err));
@@ -160,7 +160,7 @@ async function main() {
                 }
             }
             try {
-                command.handle(client, chat, BotsApp, args).catch(err => console.log("[ERROR] " + err));
+                command.handle(client, chat, Athena, args).catch(err => console.log("[ERROR] " + err));
             } catch (err) {
                 console.log(chalk.red("[ERROR] ", err));
             }

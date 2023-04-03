@@ -6,14 +6,14 @@ import db from "../lib/db.js"
 import format from 'string-format';
 import { Transform } from "stream";
 import { writeFile } from 'fs/promises';
-import BotsApp from './sidekick';
+import Athena from './sidekick';
 import Client from './client';
 import { MessageType } from "../sidekick/message-type.js";
 import { GroupParticipant } from '@adiwajshing/baileys';
 const { window } = new JSDOM();
 const ERROR_TEMPLATE = db.general.ERROR_TEMPLATE
 
-const getCleanedContact = async (args: string[], client: Client, BotsApp: BotsApp) => {
+const getCleanedContact = async (args: string[], client: Client, Athena: Athena) => {
     var jidNumber = '';
     var countryCode = config.COUNTRY_CODE;
     if (parseInt(args[0]) === NaN || args[0][0] === "+" || args[0][0] === "@") {
@@ -21,7 +21,7 @@ const getCleanedContact = async (args: string[], client: Client, BotsApp: BotsAp
             jidNumber = args[0].substring(1, args[0].length + 1);
         }
         else {
-            client.sendMessage(BotsApp.chatId,"*Enter valid contact number.* Approved Syntax:\n```1. XXXXXXXXXX``` \n```2. Tag the person``` \n```3. +(YYY)XXXXXXXXXX.``` \n_(YY- Country Code, without zeros)_", MessageType.text);
+            client.sendMessage(Athena.chatId,"*Enter valid contact number.* Approved Syntax:\n```1. XXXXXXXXXX``` \n```2. Tag the person``` \n```3. +(YYY)XXXXXXXXXX.``` \n_(YY- Country Code, without zeros)_", MessageType.text);
             return undefined;
         }
     } else {
@@ -30,7 +30,7 @@ const getCleanedContact = async (args: string[], client: Client, BotsApp: BotsAp
 
     if (jidNumber.length < 8 || jidNumber.length > 13) {
         client.sendMessage(
-            BotsApp.chatId,
+            Athena.chatId,
             "*Enter valid contact number.* Approved Syntax:\n```1. XXXXXXXXXX``` \n```2. Tag the person``` \n```3. +(YYY)XXXXXXXXXX.``` \n_(YY- Country Code, without zeros)_",
             MessageType.text
         );
@@ -81,22 +81,22 @@ const isMember = async (chatId: string, groupMembers: GroupParticipant[]) => {
         return isMember;
 }
 
-const handleError = async (err, client, BotsApp, customMessage = "```Something went wrong. The error has been logged in log chats```") => {
+const handleError = async (err, client, Athena, customMessage = "```Something went wrong. The error has been logged in log chats```") => {
     console.log(chalk.redBright.bold("[ERROR] " + err));
     let data = {
-        commandName: BotsApp.commandName,
-        fromMe: BotsApp.fromMe,
-        isReply: BotsApp.isReply,
-        isGroup: BotsApp.isGroup,
-        isPm: BotsApp.isPm,
-        isImage: BotsApp.isImage,
-        isBotGroupAdmin: BotsApp.isBotGroupAdmin,
-        isSenderGroupAdmin: BotsApp.isSenderGroupAdmin,
-        isSenderSudo: BotsApp.isSenderSUDO,
+        commandName: Athena.commandName,
+        fromMe: Athena.fromMe,
+        isReply: Athena.isReply,
+        isGroup: Athena.isGroup,
+        isPm: Athena.isPm,
+        isImage: Athena.isImage,
+        isBotGroupAdmin: Athena.isBotGroupAdmin,
+        isSenderGroupAdmin: Athena.isSenderGroupAdmin,
+        isSenderSudo: Athena.isSenderSUDO,
         err: err
     }
-    client.sendMessage(BotsApp.chatId, customMessage, MessageType.text);
-    client.sendMessage(BotsApp.logGroup, format(ERROR_TEMPLATE, data), MessageType.text);
+    client.sendMessage(Athena.chatId, customMessage, MessageType.text);
+    client.sendMessage(Athena.logGroup, format(ERROR_TEMPLATE, data), MessageType.text);
 }
 
 const saveBuffer = async (fileName: string, stream: Transform) => {

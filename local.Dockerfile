@@ -2,9 +2,9 @@ FROM node:18.15.0 as node
 
 WORKDIR /
 
-COPY . /BotsApp
+COPY . /Athena
 
-WORKDIR /BotsApp
+WORKDIR /Athena
 
 #RUN corepack enable
 
@@ -13,6 +13,6 @@ WORKDIR /BotsApp
 RUN npm install
 
 
-# RUN cp -r /root/Baileys/lib /BotsApp/node_modules/@adiwajshing/baileys/
+# RUN cp -r /root/Baileys/lib /Athena/node_modules/@adiwajshing/baileys/
 
 CMD [ "npm", "start"]

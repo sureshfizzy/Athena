@@ -1,7 +1,7 @@
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client.js";
-import BotsApp from "../sidekick/sidekick";
+import Athena from "../sidekick/sidekick";
 import format from "string-format";
 import { MessageType } from "../sidekick/message-type.js";
 import { proto } from "@adiwajshing/baileys";
@@ -13,43 +13,43 @@ export default  {
     description: MUTE.DESCRIPTION,
     extendedDescription: MUTE.EXTENDED_DESCRIPTION,
     demo: { isEnabled: true, text: [".mute", ".mute 10 s", ".mute 1 h"] },
-    async handle(client: Client, chat: proto.IWebMessageInfo, BotsApp: BotsApp, args: string[]): Promise<void> {
+    async handle(client: Client, chat: proto.IWebMessageInfo, Athena: Athena, args: string[]): Promise<void> {
         try {
-            if (!BotsApp.isGroup) {
+            if (!Athena.isGroup) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MUTE.NOT_GROUP_CHAT,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
-            await client.getGroupMetaData(BotsApp.chatId, BotsApp);
-            if (!BotsApp.isBotGroupAdmin) {
+            await client.getGroupMetaData(Athena.chatId, Athena);
+            if (!Athena.isBotGroupAdmin) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MUTE.NOT_ADMIN,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
             if (!args[0]) {
                 const ok = await client.sock.chatModify(
                     { mute: 8*60*60*1000 },
-                    BotsApp.chatId
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    Athena.chatId
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 console.log(ok);
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MUTE.CHAT_ADMIN_ONLY,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             } else if (parseInt(args[0]) === NaN) {
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MUTE.MENTION_DURATION,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 return;
             }
 
@@ -70,30 +70,30 @@ export default  {
 
             await client.sock.chatModify(
                 { mute: duration },
-                BotsApp.chatId
+                Athena.chatId
             );
             client.sendMessage(
-                BotsApp.chatId,
+                Athena.chatId,
                 "```Chat permissions changed to```  *admin only*  ```for " +
                     args[0] +
                     " " +
                     type +
                     ".```",
                 MessageType.text
-            ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+            ).catch(err => inputSanitization.handleError(err, client, Athena));
             setTimeout(async () => {
                 await client.sock.chatModify(
                     { mute: null },
-                    BotsApp.chatId
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                    Athena.chatId
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
                 client.sendMessage(
-                    BotsApp.chatId,
+                    Athena.chatId,
                     MUTE.CHAT_ALL_MEMBERS,
                     MessageType.text
-                ).catch(err => inputSanitization.handleError(err, client, BotsApp));
+                ).catch(err => inputSanitization.handleError(err, client, Athena));
             }, duration);
         } catch (err) {
-            await inputSanitization.handleError(err, client, BotsApp);
+            await inputSanitization.handleError(err, client, Athena);
         }
     },
 };
