@@ -196,7 +196,7 @@ export default  {
                             };
 
                             const imageUrl =
-                                "https://raw.githubusercontent.com/Prince-Mendiratta/Athena-Resources/main/weather/" +
+                                "https://raw.githubusercontent.com/sureshfizzy/Athena-Resources/main/weather/" +
                                 imageName +
                                 ".jpg";
                             result(imageUrl, weatherDataVariables, downloading);
@@ -341,7 +341,7 @@ export default  {
                                 dateAndTime: dateAndTime,
                             };
                             const imageUrl =
-                                "https://raw.githubusercontent.com/Prince-Mendiratta/Athena-Resources/main/weather/" +
+                                "https://raw.githubusercontent.com/sureshfizzy/Athena-Resources/main/weather/" +
                                 imageName +
                                 ".jpg";
 
