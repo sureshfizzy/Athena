@@ -4,7 +4,7 @@ import Strings from "../lib/db.js";
 import Client from "../sidekick/client.js";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 const GETDP = Strings.getdp;
 
 export default  {

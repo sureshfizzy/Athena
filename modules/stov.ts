@@ -3,7 +3,7 @@ import fs from "fs";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Strings from "../lib/db.js";
 import Client from "../sidekick/client";
-import { downloadContentFromMessage, proto } from "@adiwajshing/baileys";
+import { downloadContentFromMessage, proto } from "@whiskeysockets/baileys";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import { Transform } from "stream";

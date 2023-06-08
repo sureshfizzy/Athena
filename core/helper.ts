@@ -1,7 +1,7 @@
 import {config} from '../config.js'
 import chalk from 'chalk'
 import AthenaClass from '../sidekick/sidekick.js'
-import {proto, WASocket} from '@adiwajshing/baileys'
+import {proto, WASocket} from '@whiskeysockets/baileys'
 
 
 const resolve = async function (messageInstance: proto.IWebMessageInfo, client: WASocket) {

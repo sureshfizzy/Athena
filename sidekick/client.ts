@@ -1,4 +1,4 @@
-import {AnyMessageContent, GroupMetadata, GroupParticipant, proto, WASocket} from "@adiwajshing/baileys";
+import {AnyMessageContent, GroupMetadata, GroupParticipant, proto, WASocket} from "@whiskeysockets/baileys";
 import {MessageType} from "./message-type.js";
 import Athena from "./sidekick.js";
 

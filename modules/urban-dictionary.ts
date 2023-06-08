@@ -3,7 +3,7 @@ import inputSanitization from "../sidekick/input-sanitization.js";
 import STRINGS from "../lib/db.js";
 import format from "string-format";
 import Client from "../sidekick/client";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 import ud from "urban-dictionary";

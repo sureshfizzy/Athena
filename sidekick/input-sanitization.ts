@@ -9,7 +9,7 @@ import { writeFile } from 'fs/promises';
 import Athena from './sidekick';
 import Client from './client';
 import { MessageType } from "../sidekick/message-type.js";
-import { GroupParticipant } from '@adiwajshing/baileys';
+import { GroupParticipant } from '@whiskeysockets/baileys';
 const { window } = new JSDOM();
 const ERROR_TEMPLATE = db.general.ERROR_TEMPLATE
 

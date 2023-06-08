@@ -5,7 +5,7 @@ import STRINGS from "../lib/db.js";
 import Users from '../database/user.js';
 import format from 'string-format';
 import Athena from '../sidekick/sidekick.js';
-import { WASocket } from '@adiwajshing/baileys';
+import { WASocket } from '@whiskeysockets/baileys';
 import Client from '../sidekick/client.js';
 import { MessageType } from '../sidekick/message-type.js';
 

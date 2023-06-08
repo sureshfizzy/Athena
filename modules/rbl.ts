@@ -3,7 +3,7 @@ import format from "string-format";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Blacklist from "../database/blacklist.js";
 import Client from "../sidekick/client";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const rbl = Strings.rbl;

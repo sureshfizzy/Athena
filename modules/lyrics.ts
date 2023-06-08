@@ -1,7 +1,7 @@
 import Client from "../sidekick/client.js";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 import got, {Response} from "got";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import STRINGS from "../lib/db.js";

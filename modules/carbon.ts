@@ -6,7 +6,7 @@ import format from "string-format";
 import Client from "../sidekick/client.js";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 
 const CARBON = String.carbon;
 

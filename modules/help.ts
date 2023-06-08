@@ -5,7 +5,7 @@ import {config} from "../config.js";
 import Client from "../sidekick/client.js";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
-import { AnyMediaMessageContent, AnyMessageContent, proto } from "@adiwajshing/baileys";
+import { AnyMediaMessageContent, AnyMessageContent, proto } from "@whiskeysockets/baileys";
 import Command from "../sidekick/command";
 const HELP = Strings.help;
 

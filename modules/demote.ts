@@ -1,7 +1,7 @@
 import inputSanitization from "../sidekick/input-sanitization.js";
 import String from "../lib/db.js";
 import Client from "../sidekick/client";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const REPLY = String.demote;

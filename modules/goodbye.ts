@@ -2,7 +2,7 @@ import Strings from "../lib/db.js";
 import inputSanitization from "../sidekick/input-sanitization.js";
 import Greetings from "../database/greeting.js";
 import Client from "../sidekick/client";
-import { proto } from "@adiwajshing/baileys";
+import { proto } from "@whiskeysockets/baileys";
 import Athena from "../sidekick/sidekick";
 import { MessageType } from "../sidekick/message-type.js";
 const GOODBYE = Strings.goodbye;

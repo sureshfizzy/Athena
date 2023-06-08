@@ -1,6 +1,7 @@
 import { Boom } from '@hapi/boom'
 import P, { Logger } from 'pino'
-import makeWASocket, { MessageRetryMap, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, WASocket, proto, Contact } from '@adiwajshing/baileys'
+import makeWASocket, { DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, WASocket, proto, Contact } from '@whiskeysockets/baileys'
+import MessageRetryMap from '@whiskeysockets/baileys';
 // @ts-ignore
 import useRemoteFileAuthState from './core/dbAuth.cjs';
 import fs from 'fs'
@@ -20,6 +21,7 @@ import Command from './sidekick/command.js'
 import Athena from './sidekick/sidekick.js'
 import Client from './sidekick/client.js'
 import { MessageType } from './sidekick/message-type.js'
+type MessageRetryMap = Record<string, number>;
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -95,7 +97,7 @@ setInterval(() => {
             // implement to handle retries
             getMessage: async key => {
                 if (store) {
-                    const msg = await store.loadMessage(key.remoteJid!, key.id!, undefined)
+                    const msg = await store.loadMessage(key.remoteJid!, key.id!)
                     return msg?.message || undefined
                 }
 
