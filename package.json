@@ -16,7 +16,7 @@
     "@hapi/hoek": "9.3.0",
     "@nuintun/qrcode": "^3.0.1",
     "@vitalets/google-translate-api": "^7.0.0",
-    "@whiskeysockets/baileys": "^6.2.1",
+    "@whiskeysockets/baileys": "^6.3.1",
     "axios": "^0.27.2",
     "bing-chat": "^0.2.3",
     "chalk": "^4.1.1",
